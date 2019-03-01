@@ -1,4 +1,4 @@
-package ch.uzh.ifi.seal.soprafs19.entity;
+package ch.uzh.ifi.seal.soprafs19.response;
 
 public class Location {
 
