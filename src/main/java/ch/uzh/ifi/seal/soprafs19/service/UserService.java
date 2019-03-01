@@ -41,4 +41,22 @@ public class UserService {
     public User getUser(long id){
          return this.userRepository.findById(id);
     }
+
+    public void updateUser(long id, User user){
+        // TODO update the oldUser with the fields of user
+
+        if(user.getUsername() != null){
+            // update username IFF username is not already occupied by an other user
+        }
+        if(user.getPassword() != null){
+            // update password
+        }
+        if(user.getBirthday() != null){
+            // update birthday
+        }
+
+
+    }
+
+
 }
