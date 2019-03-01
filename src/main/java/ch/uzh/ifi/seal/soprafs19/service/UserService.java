@@ -35,4 +35,8 @@ public class UserService {
         userRepository.save(newUser);
         log.debug("Created Information for User: {}", newUser);
     }
+
+    public User getUser(long id){
+         return this.userRepository.findById(id);
+    }
 }
