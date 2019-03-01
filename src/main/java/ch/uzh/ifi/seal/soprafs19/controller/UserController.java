@@ -44,4 +44,12 @@ public class UserController {
 
 
 
+    @PutMapping("/users/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    void updateUser(@PathVariable long id, @RequestBody User user){
+        this.service.updateUser(id, user);
+    }
+
+
+
 }
