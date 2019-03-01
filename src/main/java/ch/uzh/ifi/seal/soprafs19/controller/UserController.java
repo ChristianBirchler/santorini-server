@@ -17,12 +17,12 @@ public class UserController {
         this.service = service;
     }
 
-    @GetMapping("/users")
+    @GetMapping("/template")
     Iterable<User> all() {
         return service.getUsers();
     }
 
-    @PostMapping("/users")
+    @PostMapping("/template")
     User createUser(@RequestBody User newUser) {
         return this.service.createUser(newUser);
     }
