@@ -3,6 +3,7 @@ package ch.uzh.ifi.seal.soprafs19.controller;
 import ch.uzh.ifi.seal.soprafs19.entity.User;
 import ch.uzh.ifi.seal.soprafs19.repository.UserRepository;
 import ch.uzh.ifi.seal.soprafs19.response.LocationResponse;
+import ch.uzh.ifi.seal.soprafs19.response.UserResponse;
 import ch.uzh.ifi.seal.soprafs19.service.UserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -32,6 +33,14 @@ public class UserController {
         return new LocationResponse(url);
     }
 
+
+    @GetMapping("/users/{id}")
+    UserResponse getUser(@PathVariable long id){
+
+        User user = this.service.getUser(id);
+
+        return new UserResponse(user);
+    }
 
 
 
