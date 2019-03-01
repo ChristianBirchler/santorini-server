@@ -3,6 +3,7 @@ package ch.uzh.ifi.seal.soprafs19.entity;
 import ch.uzh.ifi.seal.soprafs19.constant.UserStatus;
 
 import java.io.Serializable;
+import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -22,6 +23,8 @@ public class User implements Serializable {
 	@Column(nullable = false, unique = true) 
 	private String username;
 
+	@Column(nullable = false)
+	private Date creationDate;
 
 	@Column(nullable = false)
 	private String password;
@@ -32,6 +35,17 @@ public class User implements Serializable {
 	@Column(nullable = false)
 	private UserStatus status;
 
+	@Column
+	private Date birthday;
+
+	public void setBirthday(Date birthday) {
+		this.birthday = birthday;
+	}
+
+	public Date getBirthday() {
+		return birthday;
+	}
+
 	public Long getId() {
 		return id;
 	}
@@ -40,7 +54,13 @@ public class User implements Serializable {
 		this.id = id;
 	}
 
+	public void setCreationDate(Date creationDate) {
+		this.creationDate = creationDate;
+	}
 
+	public Date getCreationDate() {
+		return creationDate;
+	}
 
 	public String getUsername() {
 		return username;

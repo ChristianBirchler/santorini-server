@@ -7,6 +7,12 @@ import java.util.Date;
 
 public class UserResponse {
 
+    /*
+    This class is used for the response on the endpoint GET /users/{id}.
+    Take a look on the specification from Assignment1.pdf!
+     */
+
+
     private long id;
     private String username;
     private Date creationDate;
@@ -14,16 +20,11 @@ public class UserResponse {
     private Date birthday;
 
     public UserResponse(User user){
-
         this.id = user.getId();
         this.username = user.getUsername();
-
-        // TODO creation date as field in User entity
-
+        this.creationDate = user.getCreationDate();
         this.loggedIn = (UserStatus.ONLINE == user.getStatus());
-
-        // TODO birthday as field in User entity
-
+        this.birthday = user.getBirthday();
     }
 
 
