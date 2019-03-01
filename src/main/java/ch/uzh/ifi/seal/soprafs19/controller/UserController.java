@@ -2,7 +2,7 @@ package ch.uzh.ifi.seal.soprafs19.controller;
 
 import ch.uzh.ifi.seal.soprafs19.entity.User;
 import ch.uzh.ifi.seal.soprafs19.repository.UserRepository;
-import ch.uzh.ifi.seal.soprafs19.response.Location;
+import ch.uzh.ifi.seal.soprafs19.response.LocationResponse;
 import ch.uzh.ifi.seal.soprafs19.service.UserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -20,7 +20,7 @@ public class UserController {
 
     @PostMapping("/users")
     @ResponseStatus(HttpStatus.CREATED)
-    Location createUser(@RequestBody User newUser){
+    LocationResponse createUser(@RequestBody User newUser){
 
         this.service.createUser(newUser);
 
@@ -29,8 +29,9 @@ public class UserController {
         String strId = Long.toString(id);
 
         String url = "/users/"+strId;
-        return new Location(url);
+        return new LocationResponse(url);
     }
+
 
 
 

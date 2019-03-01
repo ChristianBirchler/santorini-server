@@ -1,10 +1,10 @@
 package ch.uzh.ifi.seal.soprafs19.response;
 
-public class Location {
+public class LocationResponse {
 
     private String url;
 
-    public Location(String url){
+    public LocationResponse(String url){
         this.url = url;
     }
 
