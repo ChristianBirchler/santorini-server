@@ -89,6 +89,7 @@ public class UserService {
             updateUser.setBirthday(user.getBirthday());
         }
 
+        this.userRepository.save(updateUser);
 
     }
 
