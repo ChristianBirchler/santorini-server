@@ -45,14 +45,17 @@ public class UserService {
     public void updateUser(long id, User user){
         // TODO update the oldUser with the fields of user
 
+        User updateUser = this.userRepository.findById(id);
+
+
         if(user.getUsername() != null){
-            // update username IFF username is not already occupied by an other user
+            updateUser.setUsername(user.getUsername());
         }
         if(user.getPassword() != null){
-            // update password
+            updateUser.setPassword(user.getPassword());
         }
         if(user.getBirthday() != null){
-            // update birthday
+            updateUser.setBirthday(user.getBirthday());
         }
 
 
