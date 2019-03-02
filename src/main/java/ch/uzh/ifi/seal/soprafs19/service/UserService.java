@@ -2,6 +2,7 @@ package ch.uzh.ifi.seal.soprafs19.service;
 
 import ch.uzh.ifi.seal.soprafs19.constant.UserStatus;
 import ch.uzh.ifi.seal.soprafs19.entity.User;
+import ch.uzh.ifi.seal.soprafs19.exception.UserNotFoundException;
 import ch.uzh.ifi.seal.soprafs19.repository.UserRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -39,11 +40,23 @@ public class UserService {
     }
 
     public User getUser(long id){
-         return this.userRepository.findById(id);
+
+
+        if(!this.userRepository.existsById(id)){
+            throw new UserNotFoundException(id);
+        }
+
+        return this.userRepository.findById(id);
     }
 
     public void updateUser(long id, User user){
         // TODO update the oldUser with the fields of user
+
+
+        if(!this.userRepository.existsById(id)){
+            throw new UserNotFoundException(id);
+        }
+
 
         User updateUser = this.userRepository.findById(id);
 
