@@ -1,5 +1,6 @@
 package ch.uzh.ifi.seal.soprafs19.controller;
 
+import ch.uzh.ifi.seal.soprafs19.exception.UserAlreadyExistsException;
 import ch.uzh.ifi.seal.soprafs19.exception.UserNotFoundException;
 import ch.uzh.ifi.seal.soprafs19.response.ErrorResponse;
 import org.springframework.http.HttpStatus;
@@ -23,6 +24,13 @@ public class UserExceptionController {
     }
 
 
+    @ExceptionHandler(UserAlreadyExistsException.class)
+    public final ResponseEntity<Object> handleUserAlreadyExistsException(){
+
+        ErrorResponse error = new ErrorResponse("add User failed because username already exists");
+
+        return new ResponseEntity(error, HttpStatus.CONFLICT);
+    }
 
 
 
