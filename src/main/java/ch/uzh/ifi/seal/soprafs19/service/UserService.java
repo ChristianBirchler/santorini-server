@@ -2,6 +2,7 @@ package ch.uzh.ifi.seal.soprafs19.service;
 
 import ch.uzh.ifi.seal.soprafs19.constant.UserStatus;
 import ch.uzh.ifi.seal.soprafs19.entity.User;
+import ch.uzh.ifi.seal.soprafs19.exception.UserAlreadyExistsException;
 import ch.uzh.ifi.seal.soprafs19.exception.UserNotFoundException;
 import ch.uzh.ifi.seal.soprafs19.repository.UserRepository;
 import org.slf4j.Logger;
@@ -31,13 +32,28 @@ public class UserService {
         return this.userRepository.findAll();
     }
 
+
+
+
+
     public void createUser(User newUser) {
+
+        if(this.userRepository.findByUsername(newUser.getUsername()) != null){
+            throw new UserAlreadyExistsException();
+        }
+
         newUser.setToken(UUID.randomUUID().toString());
         newUser.setStatus(UserStatus.ONLINE);
         newUser.setCreationDate(new Date());
         userRepository.save(newUser);
         log.debug("Created Information for User: {}", newUser);
+
+
     }
+
+
+
+
 
     public User getUser(long id){
 
@@ -49,8 +65,10 @@ public class UserService {
         return this.userRepository.findById(id);
     }
 
+
+
+
     public void updateUser(long id, User user){
-        // TODO update the oldUser with the fields of user
 
 
         if(!this.userRepository.existsById(id)){
