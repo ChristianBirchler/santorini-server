@@ -47,6 +47,15 @@ public class UserController {
     }
 
 
+
+    @GetMapping("/users")
+    Iterable<User> all() {
+        return service.getUsers();
+    }
+
+
+
+
     @GetMapping("/users/{id}")
     UserResponse getUser(@PathVariable long id){
 
