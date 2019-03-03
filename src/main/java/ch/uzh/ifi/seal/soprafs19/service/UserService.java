@@ -7,6 +7,7 @@ import ch.uzh.ifi.seal.soprafs19.exception.InvalidCredentialsException;
 import ch.uzh.ifi.seal.soprafs19.exception.UserAlreadyExistsException;
 import ch.uzh.ifi.seal.soprafs19.exception.UserNotFoundException;
 import ch.uzh.ifi.seal.soprafs19.repository.UserRepository;
+import ch.uzh.ifi.seal.soprafs19.response.LoginResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,7 +36,7 @@ public class UserService {
     }
 
 
-    public void checkCredentials(Credentials cred){
+    public LoginResponse checkCredentials(Credentials cred){
         String username = cred.getUsername();
         String password = cred.getPassword();
 
@@ -49,6 +50,10 @@ public class UserService {
             throw new InvalidCredentialsException();
         }
 
+
+        String token = this.userRepository.findByUsername(username).getToken();
+
+        return new LoginResponse(token);
 
     }
 

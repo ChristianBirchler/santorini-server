@@ -5,6 +5,7 @@ import ch.uzh.ifi.seal.soprafs19.entity.User;
 import ch.uzh.ifi.seal.soprafs19.exception.InvalidCredentialsException;
 import ch.uzh.ifi.seal.soprafs19.repository.UserRepository;
 import ch.uzh.ifi.seal.soprafs19.response.LocationResponse;
+import ch.uzh.ifi.seal.soprafs19.response.LoginResponse;
 import ch.uzh.ifi.seal.soprafs19.response.UserResponse;
 import ch.uzh.ifi.seal.soprafs19.service.UserService;
 import org.springframework.http.HttpStatus;
@@ -22,10 +23,10 @@ public class UserController {
 
 
     @PostMapping("/users/credentials")
-    @ResponseStatus(HttpStatus.NO_CONTENT)
-    void login(@RequestBody Credentials cred){
+    @ResponseStatus(HttpStatus.OK)
+    LoginResponse login(@RequestBody Credentials cred){
 
-        this.service.checkCredentials(cred);
+         return this.service.checkCredentials(cred);
 
     }
 
