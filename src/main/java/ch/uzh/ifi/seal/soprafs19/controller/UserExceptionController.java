@@ -1,5 +1,6 @@
 package ch.uzh.ifi.seal.soprafs19.controller;
 
+import ch.uzh.ifi.seal.soprafs19.exception.InvalidCredentialsException;
 import ch.uzh.ifi.seal.soprafs19.exception.UserAlreadyExistsException;
 import ch.uzh.ifi.seal.soprafs19.exception.UserNotFoundException;
 import ch.uzh.ifi.seal.soprafs19.response.ErrorResponse;
@@ -11,6 +12,13 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 @ControllerAdvice
 public class UserExceptionController {
 
+
+
+    @ExceptionHandler(InvalidCredentialsException.class)
+    public final ResponseEntity<Object> handleInvalidCredentialsException(InvalidCredentialsException ex){
+        ErrorResponse error = new ErrorResponse("invalid credentials");
+        return new ResponseEntity(error, HttpStatus.NOT_FOUND);
+    }
 
 
 

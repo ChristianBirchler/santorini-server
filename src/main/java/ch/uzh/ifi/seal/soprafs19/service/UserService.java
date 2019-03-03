@@ -1,7 +1,9 @@
 package ch.uzh.ifi.seal.soprafs19.service;
 
 import ch.uzh.ifi.seal.soprafs19.constant.UserStatus;
+import ch.uzh.ifi.seal.soprafs19.entity.Credentials;
 import ch.uzh.ifi.seal.soprafs19.entity.User;
+import ch.uzh.ifi.seal.soprafs19.exception.InvalidCredentialsException;
 import ch.uzh.ifi.seal.soprafs19.exception.UserAlreadyExistsException;
 import ch.uzh.ifi.seal.soprafs19.exception.UserNotFoundException;
 import ch.uzh.ifi.seal.soprafs19.repository.UserRepository;
@@ -33,6 +35,22 @@ public class UserService {
     }
 
 
+    public void checkCredentials(Credentials cred){
+        String username = cred.getUsername();
+        String password = cred.getPassword();
+
+        if (!this.userRepository.existsByUsername(username)){
+            throw new InvalidCredentialsException();
+        }
+
+        User user = this.userRepository.findByUsername(username);
+
+        if (!user.getPassword().equals(password)){
+            throw new InvalidCredentialsException();
+        }
+
+
+    }
 
 
 

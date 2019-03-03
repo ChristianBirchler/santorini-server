@@ -1,6 +1,8 @@
 package ch.uzh.ifi.seal.soprafs19.controller;
 
+import ch.uzh.ifi.seal.soprafs19.entity.Credentials;
 import ch.uzh.ifi.seal.soprafs19.entity.User;
+import ch.uzh.ifi.seal.soprafs19.exception.InvalidCredentialsException;
 import ch.uzh.ifi.seal.soprafs19.repository.UserRepository;
 import ch.uzh.ifi.seal.soprafs19.response.LocationResponse;
 import ch.uzh.ifi.seal.soprafs19.response.UserResponse;
@@ -16,6 +18,17 @@ public class UserController {
     UserController(UserService service) {
         this.service = service;
     }
+
+
+
+    @PostMapping("/users/credentials")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    void login(@RequestBody Credentials cred){
+
+        this.service.checkCredentials(cred);
+
+    }
+
 
 
 
