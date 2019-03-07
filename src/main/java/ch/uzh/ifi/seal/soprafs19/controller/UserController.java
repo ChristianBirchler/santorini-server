@@ -67,6 +67,8 @@ public class UserController {
 
 
 
+
+    @CrossOrigin(origins = "http://localhost:3000")
     @PutMapping("/users/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     void updateUser(@PathVariable long id, @RequestBody User user){
