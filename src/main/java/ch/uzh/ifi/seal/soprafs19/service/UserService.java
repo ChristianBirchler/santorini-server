@@ -103,6 +103,9 @@ public class UserService {
 
 
         if(user.getUsername() != null){
+            if(this.userRepository.findByUsername(user.getUsername()) != null){ // username is already occupied
+                throw new UserAlreadyExistsException();
+            }
             updateUser.setUsername(user.getUsername());
         }
         if(user.getPassword() != null){
