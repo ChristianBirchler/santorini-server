@@ -34,8 +34,24 @@ public class UserServiceTest {
     @Autowired
     private UserService userService;
 
+
+
     @Test
-    public void createUser() {
+    public void getUsersTest(){
+        Assert.fail();
+    }
+
+
+    @Test
+    public void checkCredentialsTest(){
+        Assert.fail();
+    }
+
+
+
+
+    @Test
+    public void createUserTest() {
 
         Assert.assertNull("initially repository must be empty", userRepository.findByUsername("testUsername"));
 
@@ -54,7 +70,7 @@ public class UserServiceTest {
 
 
     @Test
-    public void getUser(){
+    public void getUserTest(){
 
         User user2 = new User();
         user2.setUsername("lisa");
@@ -80,7 +96,7 @@ public class UserServiceTest {
 
 
     @Test
-    public void updateUser() {
+    public void updateUserTest() {
 
         // TODO birthday: which format (Date object or only string???)
 
