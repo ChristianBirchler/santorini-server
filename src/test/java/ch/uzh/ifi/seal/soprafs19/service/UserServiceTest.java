@@ -14,6 +14,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 
+import java.lang.reflect.Array;
+import java.util.ArrayList;
 import java.util.Date;
 
 /**
@@ -38,7 +40,44 @@ public class UserServiceTest {
 
     @Test
     public void getUsersTest(){
-        Assert.fail();
+
+        for (User el : userService.getUsers()){
+            Assert.assertNull(el);
+        }
+
+
+
+        User user1 = new User();
+        user1.setUsername("user1");
+        user1.setPassword("secret");
+        userService.createUser(user1);
+
+        User user2 = new User();
+        user2.setUsername("user2");
+        user2.setPassword("secret");
+        userService.createUser(user2);
+        ArrayList<User> users = new ArrayList<>();
+        users.add(user1);
+        users.add(user2);
+
+        ArrayList<User> returnedUsers = new ArrayList<>();
+        for (User el : userService.getUsers()){
+            returnedUsers.add(el);
+        }
+
+        for (int i=0; i<users.size();i++){
+            Assert.assertEquals(users.get(i), returnedUsers.get(i));
+        }
+
+        for (int i=0; i<users.size();i++){
+            Assert.assertNotEquals(users.get(users.size()-i-1), returnedUsers.get(i));
+        }
+
+
+
+
+
+
     }
 
 
