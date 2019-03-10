@@ -63,7 +63,31 @@ public class UserControllerTest extends AbstractTest {
 
     @Test
     public void getUserByIdTest() throws Exception {
-        Assert.fail();
+
+        userRepository.deleteAll();
+        this.setUp();
+        long id =this.userRepository.findByUsername("user1").getId();
+
+        String strId = Long.toString(id);
+
+        String uri = "/users/"+strId;
+        MvcResult mvcResult = mvc.perform(MockMvcRequestBuilders.get(uri)
+                .accept(MediaType.APPLICATION_JSON_VALUE)).andReturn();
+
+        int status = mvcResult.getResponse().getStatus();
+        Assert.assertEquals(200, status);
+        String content = mvcResult.getResponse().getContentAsString();
+        UserResponse user = super.mapFromJson(content, UserResponse.class);
+
+        Assert.assertEquals("user1", user.getUsername());
+        Assert.assertNotNull(user.getCreationDate());
+        Assert.assertNotNull(user.getId());
+
+
+        // TODO test case if user not found
+
+
+
     }
 
 
