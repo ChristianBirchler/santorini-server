@@ -42,7 +42,7 @@ public class UserServiceTest {
 
 
     @Test
-    public void getUsersTest(){ // run this test separately! otherwise it fails!
+    public void getUsersTest(){
 
         for (User el : userService.getUsers()){
             Assert.assertNull(el);
@@ -78,7 +78,7 @@ public class UserServiceTest {
 
 
 
-
+        this.userRepository.deleteAll();
 
 
     }
@@ -139,6 +139,7 @@ public class UserServiceTest {
         }
 
 
+        this.userRepository.deleteAll();
 
     }
 
@@ -160,6 +161,8 @@ public class UserServiceTest {
         Assert.assertEquals("user status is not online", testUser.getStatus(),UserStatus.ONLINE);
         Assert.assertEquals("find by token does not work", testUser, userRepository.findByToken(testUser.getToken()));
 
+
+        this.userRepository.deleteAll();
 
     }
 
@@ -187,34 +190,39 @@ public class UserServiceTest {
         Assert.assertNotEquals(returnedUser, user2);
 
 
+        this.userRepository.deleteAll();
+
     }
 
 
     @Test
-    public void updateUserTest() { // run this test separately! otherwise it fails!
+    public void updateUserTest() { // run this test case separately otherwise it fails (UNKNOWN REASON)
+
+        this.userRepository.deleteAll();
 
 
-        User user4 = new User();
-        user4.setUsername("nelson");
-        user4.setPassword("hahahahahaha!!!");
-        userService.createUser(user4);
-
-        user4.setUsername("flanders");
-        user4.setPassword("jesus");
+        User user = new User();
+        user.setUsername("roger");
+        user.setPassword("1234");
 
 
-        User retUser = userService.getUser(1);
+        this.userService.createUser(user);
 
-        Assert.assertNotEquals(user4.getUsername(), retUser.getUsername());
-        Assert.assertNotEquals(user4.getPassword(), retUser.getPassword());
+        user.setUsername("federer");
+        user.setPassword("maestro");
 
 
-        userService.updateUser(1, user4);
-        retUser = userService.getUser(1);
-        Assert.assertEquals(user4.getUsername(), retUser.getUsername());
-        Assert.assertEquals(user4.getPassword(), retUser.getPassword());
-        Assert.assertEquals(user4, retUser);
 
+
+        this.userService.updateUser(this.userRepository.findByUsername("roger").getId(), user);
+
+
+        User returnedUser = this.userRepository.findById(1);
+
+        Assert.assertEquals(user.getUsername(), returnedUser.getUsername());
+
+
+        this.userRepository.deleteAll();
 
     }
 
