@@ -27,6 +27,8 @@ public class UserResponse {
         this.birthday = user.getBirthday();
     }
 
+    public UserResponse(){}
+
 
     public long getId() {
         return id;
