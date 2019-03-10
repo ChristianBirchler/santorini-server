@@ -42,7 +42,7 @@ public class UserServiceTest {
 
 
     @Test
-    public void getUsersTest(){
+    public void getUsersTest(){ // run this test separately! otherwise it fails!
 
         for (User el : userService.getUsers()){
             Assert.assertNull(el);
@@ -51,12 +51,12 @@ public class UserServiceTest {
 
 
         User user1 = new User();
-        user1.setUsername("user1");
+        user1.setUsername("max");
         user1.setPassword("secret");
         userService.createUser(user1);
 
         User user2 = new User();
-        user2.setUsername("user2");
+        user2.setUsername("martha");
         user2.setPassword("secret");
         userService.createUser(user2);
         ArrayList<User> users = new ArrayList<>();
@@ -191,9 +191,8 @@ public class UserServiceTest {
 
 
     @Test
-    public void updateUserTest() {
+    public void updateUserTest() { // run this test separately! otherwise it fails!
 
-        // TODO birthday: which format (Date object or only string???)
 
         User user4 = new User();
         user4.setUsername("nelson");
