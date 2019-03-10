@@ -6,6 +6,7 @@ import static org.junit.Assert.assertTrue;
 
 import ch.uzh.ifi.seal.soprafs19.entity.User;
 import ch.uzh.ifi.seal.soprafs19.repository.UserRepository;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,7 +30,6 @@ public class UserControllerTest extends AbstractTest {
 
 
     @Override
-    @Before
     public void setUp() {
         super.setUp();
 
@@ -44,6 +44,8 @@ public class UserControllerTest extends AbstractTest {
 
     @Test
     public void getUsersTest() throws Exception {
+        setUp();
+
         String uri = "/users";
         MvcResult mvcResult = mvc.perform(MockMvcRequestBuilders.get(uri)
                 .accept(MediaType.APPLICATION_JSON_VALUE)).andReturn();
@@ -53,6 +55,31 @@ public class UserControllerTest extends AbstractTest {
         String content = mvcResult.getResponse().getContentAsString();
         User[] users = super.mapFromJson(content, User[].class);
         assertTrue(users.length == 1);
+    }
+
+
+    @Test
+    public void getUserByIdTest() throws Exception {
+        Assert.fail();
+    }
+
+
+
+    @Test
+    public void checkCredentialsTest() throws Exception {
+        Assert.fail();
+    }
+
+    @Test
+    public void createUserTest() throws Exception {
+        Assert.fail();
+    }
+
+
+
+    @Test
+    public void updateUserTest() throws Exception {
+        Assert.fail();
     }
 
 
