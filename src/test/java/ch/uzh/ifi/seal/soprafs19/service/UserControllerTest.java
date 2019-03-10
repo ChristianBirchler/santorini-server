@@ -6,6 +6,8 @@ import static org.junit.Assert.assertTrue;
 
 import ch.uzh.ifi.seal.soprafs19.entity.User;
 import ch.uzh.ifi.seal.soprafs19.repository.UserRepository;
+import ch.uzh.ifi.seal.soprafs19.response.LoginResponse;
+import ch.uzh.ifi.seal.soprafs19.response.UserResponse;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -28,7 +30,6 @@ public class UserControllerTest extends AbstractTest {
     private UserService userService;
 
 
-
     @Override
     public void setUp() {
         super.setUp();
@@ -44,7 +45,9 @@ public class UserControllerTest extends AbstractTest {
 
     @Test
     public void getUsersTest() throws Exception {
-        setUp();
+
+        userRepository.deleteAll();
+        this.setUp();
 
         String uri = "/users";
         MvcResult mvcResult = mvc.perform(MockMvcRequestBuilders.get(uri)
@@ -54,7 +57,7 @@ public class UserControllerTest extends AbstractTest {
         assertEquals(200, status);
         String content = mvcResult.getResponse().getContentAsString();
         User[] users = super.mapFromJson(content, User[].class);
-        assertTrue(users.length == 1);
+        assertTrue(users.length >= 1);
     }
 
 
