@@ -8,6 +8,8 @@ public class LocationResponse {
         this.url = url;
     }
 
+    public LocationResponse(){}
+
     public void setUrl(String url){
         this.url = url;
     }
