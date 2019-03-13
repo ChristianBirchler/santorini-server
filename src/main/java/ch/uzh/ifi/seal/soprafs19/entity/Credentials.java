@@ -5,6 +5,8 @@ public class Credentials {
     private String username;
     private String password;
 
+    public Credentials(){}
+
     public String getPassword() {
         return password;
     }
