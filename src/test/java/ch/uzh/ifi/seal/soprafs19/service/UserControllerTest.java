@@ -107,7 +107,64 @@ public class UserControllerTest extends AbstractTest {
 
     @Test
     public void checkCredentialsTest() throws Exception {
-        Assert.fail();
+
+        this.setUp();
+        String uri = "/users/credentials";
+
+
+        // valid credentials
+        Credentials credentials = new Credentials();
+        credentials.setUsername("user1");
+        credentials.setPassword("password1");
+        String inputJson = super.mapToJson(credentials);
+
+        MvcResult mvcResult = mvc.perform(MockMvcRequestBuilders.post(uri)
+                .contentType(MediaType.APPLICATION_JSON).content(inputJson)).andReturn();
+
+        int status = mvcResult.getResponse().getStatus();
+        Assert.assertEquals("status code is not 200!", 200, status);
+        String content = mvcResult.getResponse().getContentAsString();
+        LoginResponse loginResponse = super.mapFromJson(content, LoginResponse.class);
+        Assert.assertNotNull("There must be a token!", loginResponse.getToken());
+
+
+        // correct username, wrong password
+        credentials.setUsername("user1");
+        credentials.setPassword("wrongPassword");
+        inputJson = super.mapToJson(credentials);
+
+        mvcResult = mvc.perform(MockMvcRequestBuilders.post(uri)
+                .contentType(MediaType.APPLICATION_JSON).content(inputJson)).andReturn();
+
+        status = mvcResult.getResponse().getStatus();
+        Assert.assertEquals("404 response status should be set since password is wrong!", 404, status);
+
+
+        // wrong username, correct password
+        credentials.setUsername("wrongUsername");
+        credentials.setPassword("password1");
+        inputJson = super.mapToJson(credentials);
+
+        mvcResult = mvc.perform(MockMvcRequestBuilders.post(uri)
+                .contentType(MediaType.APPLICATION_JSON).content(inputJson)).andReturn();
+
+        status = mvcResult.getResponse().getStatus();
+        Assert.assertEquals("404 response status should be set since username is wrong!", 404, status);
+
+
+
+        // wrong username, wrong password
+        credentials.setUsername("wrongUsername");
+        credentials.setPassword("wrongPassword");
+        inputJson = super.mapToJson(credentials);
+
+        mvcResult = mvc.perform(MockMvcRequestBuilders.post(uri)
+                .contentType(MediaType.APPLICATION_JSON).content(inputJson)).andReturn();
+
+        status = mvcResult.getResponse().getStatus();
+        Assert.assertEquals("404 response status should be set since username and password are wrong!", 404, status);
+
+
     }
 
     @Test
