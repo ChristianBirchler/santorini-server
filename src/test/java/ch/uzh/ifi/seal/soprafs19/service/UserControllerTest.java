@@ -11,6 +11,7 @@ import ch.uzh.ifi.seal.soprafs19.exception.InvalidCredentialsException;
 import ch.uzh.ifi.seal.soprafs19.exception.UserAlreadyExistsException;
 import ch.uzh.ifi.seal.soprafs19.exception.UserNotFoundException;
 import ch.uzh.ifi.seal.soprafs19.repository.UserRepository;
+import ch.uzh.ifi.seal.soprafs19.response.LocationResponse;
 import ch.uzh.ifi.seal.soprafs19.response.LoginResponse;
 import ch.uzh.ifi.seal.soprafs19.response.UserResponse;
 import org.junit.Assert;
@@ -111,7 +112,42 @@ public class UserControllerTest extends AbstractTest {
 
     @Test
     public void createUserTest() throws Exception {
-        Assert.fail();
+        this.userRepository.deleteAll();
+        this.setUp();
+        String uri = "/users";
+        User user = new User();
+
+        // normal case
+        user.setUsername("newUser");
+        user.setPassword("myPassword");
+        String inputJson = super.mapToJson(user);
+
+        MvcResult mvcResult = mvc.perform(MockMvcRequestBuilders.post(uri)
+                .contentType(MediaType.APPLICATION_JSON).content(inputJson)).andReturn();
+
+        int status = mvcResult.getResponse().getStatus();
+        Assert.assertEquals("status code is not 201!", 201, status);
+        Assert.assertEquals("username is not properly saved in repository!",
+                user.getUsername(), userRepository.findByUsername(user.getUsername()).getUsername());
+        Assert.assertEquals("password is not properly saved in repository!",
+                user.getPassword(), userRepository.findByUsername(user.getUsername()).getPassword());
+        LocationResponse locationResponse = super.mapFromJson(mvcResult.getResponse().getContentAsString(), LocationResponse.class);
+        String strId = Long.toString(userRepository.findByUsername(user.getUsername()).getId());
+        Assert.assertEquals("Wrong url in response body!", "/users/"+strId, locationResponse.getUrl());
+
+
+        // username is already occupied
+        user.setUsername("user1");
+        user.setPassword("anotherPassword");
+        inputJson = super.mapToJson(user);
+
+        mvcResult = mvc.perform(MockMvcRequestBuilders.post(uri)
+                .contentType(MediaType.APPLICATION_JSON).content(inputJson)).andReturn();
+
+        status = mvcResult.getResponse().getStatus();
+        Assert.assertEquals("User should already exist!", 409, status);
+
+
     }
 
 
