@@ -16,7 +16,7 @@ public class UserController {
 
     private final UserService service;
 
-    UserController(UserService service) {
+    public UserController(UserService service) {
         this.service = service;
     }
 
@@ -24,7 +24,7 @@ public class UserController {
 
     @PostMapping("/users/credentials")
     @ResponseStatus(HttpStatus.OK)
-    LoginResponse login(@RequestBody Credentials cred){
+    public LoginResponse login(@RequestBody Credentials cred){
 
          return this.service.checkCredentials(cred);
 
@@ -35,7 +35,7 @@ public class UserController {
 
     @PostMapping("/users")
     @ResponseStatus(HttpStatus.CREATED)
-    LocationResponse createUser(@RequestBody User newUser){
+    public LocationResponse createUser(@RequestBody User newUser){
 
         this.service.createUser(newUser);
 
@@ -71,7 +71,7 @@ public class UserController {
     @CrossOrigin(origins = "http://localhost:3000")
     @PutMapping("/users/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    void updateUser(@PathVariable long id, @RequestBody User user){
+    public void updateUser(@PathVariable long id, @RequestBody User user){
         this.service.updateUser(id, user);
     }
 
