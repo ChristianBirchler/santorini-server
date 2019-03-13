@@ -4,7 +4,12 @@ package ch.uzh.ifi.seal.soprafs19.service;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
+import ch.uzh.ifi.seal.soprafs19.controller.UserController;
+import ch.uzh.ifi.seal.soprafs19.entity.Credentials;
 import ch.uzh.ifi.seal.soprafs19.entity.User;
+import ch.uzh.ifi.seal.soprafs19.exception.InvalidCredentialsException;
+import ch.uzh.ifi.seal.soprafs19.exception.UserAlreadyExistsException;
+import ch.uzh.ifi.seal.soprafs19.exception.UserNotFoundException;
 import ch.uzh.ifi.seal.soprafs19.repository.UserRepository;
 import ch.uzh.ifi.seal.soprafs19.response.LoginResponse;
 import ch.uzh.ifi.seal.soprafs19.response.UserResponse;
@@ -113,7 +118,67 @@ public class UserControllerTest extends AbstractTest {
 
     @Test
     public void updateUserTest() throws Exception {
-        Assert.fail();
+        userRepository.deleteAll();
+        setUp();
+        User anotherUser = new User();
+        anotherUser.setUsername("user2");
+        anotherUser.setPassword("password2");
+        userService.createUser(anotherUser);
+        UserController userController = new UserController(userService);
+
+
+        // new username (valid)
+        User betterUser = new User();
+        betterUser.setUsername("betterName");
+        try {
+            userController.updateUser(1, betterUser);
+            Assert.assertEquals("Username are not equal!",
+                    betterUser.getUsername(), userService.getUser(1).getUsername());
+        }catch (UserAlreadyExistsException ex){
+            Assert.fail("Username is already occupied!");
+        }catch (UserNotFoundException ex){
+            Assert.fail("User with corresponding id does not exist!");
+        }
+
+        // new username (invalid)
+        try {
+            userController.updateUser(1, betterUser);
+            Assert.fail("username \"betterName\" should already be occupied!");
+        }catch (UserAlreadyExistsException ex){
+            Assert.assertTrue(true);
+        }catch (UserNotFoundException ex){
+            Assert.fail("User with corresponding id does not exist!");
+        }
+
+        try {
+            userController.updateUser(2, betterUser);
+            Assert.fail("username \"betterName\" should already be occupied!");
+        }catch (UserAlreadyExistsException ex){
+            Assert.assertTrue(true);
+            Assert.assertEquals("username must not be changed!",
+                    anotherUser.getUsername(), userService.getUser(2).getUsername());
+        }catch (UserNotFoundException ex){
+            Assert.fail("User with corresponding id does not exist!");
+        }
+
+
+
+
+
+        // new password
+        User betterUser2 = new User();
+        betterUser2.setPassword("geheim");
+        try {
+            userController.updateUser(1, betterUser2);
+            Assert.assertEquals("password should be updated!",
+                    betterUser2.getPassword(), userService.getUser(1).getPassword());
+        } catch (RuntimeException ex){
+            Assert.fail("Did not update password; reason: "+ex.getMessage());
+        }
+
+
+
+
     }
 
 
