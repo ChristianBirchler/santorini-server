@@ -84,8 +84,15 @@ public class UserControllerTest extends AbstractTest {
         Assert.assertNotNull(user.getId());
 
 
-        // TODO test case if user not found
+        // test case if user not found
+        String strId2 = Long.toString(id+1);
 
+        String uri2 = "/users/"+strId2;
+        MvcResult mvcResult2 = mvc.perform(MockMvcRequestBuilders.get(uri2)
+                .accept(MediaType.APPLICATION_JSON_VALUE)).andReturn();
+
+        int status2 = mvcResult2.getResponse().getStatus();
+        Assert.assertEquals("user id should be invalid!", 404, status2);
 
 
     }
