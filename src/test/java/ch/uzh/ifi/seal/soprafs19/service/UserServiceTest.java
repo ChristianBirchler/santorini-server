@@ -210,15 +210,9 @@ public class UserServiceTest {
 
         user.setUsername("federer");
         user.setPassword("maestro");
-
-
-
-
         this.userService.updateUser(this.userRepository.findByUsername("roger").getId(), user);
 
-
         User returnedUser = this.userRepository.findById(1);
-
         Assert.assertEquals(user.getUsername(), returnedUser.getUsername());
 
 
