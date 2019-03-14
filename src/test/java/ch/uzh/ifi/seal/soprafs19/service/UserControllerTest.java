@@ -217,57 +217,75 @@ public class UserControllerTest extends AbstractTest {
         anotherUser.setUsername("user2");
         anotherUser.setPassword("password2");
         userService.createUser(anotherUser);
-        UserController userController = new UserController(userService);
-
+        User betterUser = new User();
+        String uri = "/users/";
+        long id = userRepository.findByUsername("user1").getId();
+        String strId = Long.toString(id);
 
         // new username (valid)
-        User betterUser = new User();
-        betterUser.setUsername("betterName");
-        try {
-            userController.updateUser(1, betterUser);
-            Assert.assertEquals("Username are not equal!",
-                    betterUser.getUsername(), userService.getUser(1).getUsername());
-        }catch (UserAlreadyExistsException ex){
-            Assert.fail("Username is already occupied!");
-        }catch (UserNotFoundException ex){
-            Assert.fail("User with corresponding id does not exist!");
-        }
+        betterUser.setUsername("betterUsername");
+        String inputJson = super.mapToJson(betterUser);
+
+        MvcResult mvcResult = mvc.perform(MockMvcRequestBuilders.put(uri+strId)
+                .contentType(MediaType.APPLICATION_JSON).content(inputJson)).andReturn();
+
+        int status = mvcResult.getResponse().getStatus();
+        Assert.assertEquals("There must not be any response body!", 204, status);
+        Assert.assertEquals("username is not updated!",
+                betterUser.getUsername(), userRepository.findById(id).getUsername());
+
 
         // new username (invalid)
-        try {
-            userController.updateUser(1, betterUser);
-            Assert.fail("username \"betterName\" should already be occupied!");
-        }catch (UserAlreadyExistsException ex){
-            Assert.assertTrue(true);
-        }catch (UserNotFoundException ex){
-            Assert.fail("User with corresponding id does not exist!");
-        }
+        betterUser.setUsername("user2");
+        inputJson = super.mapToJson(betterUser);
+        strId = Long.toString(userRepository.findByUsername("user2").getId());
 
-        try {
-            userController.updateUser(2, betterUser);
-            Assert.fail("username \"betterName\" should already be occupied!");
-        }catch (UserAlreadyExistsException ex){
-            Assert.assertTrue(true);
-            Assert.assertEquals("username must not be changed!",
-                    anotherUser.getUsername(), userService.getUser(2).getUsername());
-        }catch (UserNotFoundException ex){
-            Assert.fail("User with corresponding id does not exist!");
-        }
+        mvcResult = mvc.perform(MockMvcRequestBuilders.put(uri+strId)
+                .contentType(MediaType.APPLICATION_JSON).content(inputJson)).andReturn();
 
-
+        status = mvcResult.getResponse().getStatus();
+        Assert.assertEquals("username should already exist!", 409, status);
 
 
 
         // new password
         User betterUser2 = new User();
-        betterUser2.setPassword("geheim");
-        try {
-            userController.updateUser(1, betterUser2);
-            Assert.assertEquals("password should be updated!",
-                    betterUser2.getPassword(), userService.getUser(1).getPassword());
-        } catch (RuntimeException ex){
-            Assert.fail("Did not update password; reason: "+ex.getMessage());
-        }
+        betterUser2.setPassword("newPassword");
+        inputJson = super.mapToJson(betterUser2);
+        id = userRepository.findByUsername("user2").getId();
+        strId = Long.toString(id);
+
+        mvcResult = mvc.perform(MockMvcRequestBuilders.put(uri+strId)
+                .contentType(MediaType.APPLICATION_JSON).content(inputJson)).andReturn();
+
+        Assert.assertEquals("HTTP status is not correct!", 204, mvcResult.getResponse().getStatus());
+        Assert.assertEquals("Password has not changed!",
+                betterUser2.getPassword(), userRepository.findById(id).getPassword());
+
+        // new username and new password
+        betterUser.setUsername("reallyNewUsername");
+        betterUser.setPassword("reallySecret");
+        inputJson = super.mapToJson(betterUser);
+
+        mvcResult = mvc.perform(MockMvcRequestBuilders.put(uri+strId)
+                .contentType(MediaType.APPLICATION_JSON).content(inputJson)).andReturn();
+
+        Assert.assertEquals("HTTP status is not properly set!", 204, mvcResult.getResponse().getStatus());
+        Assert.assertEquals("username has not changed!",
+                betterUser.getUsername(), userRepository.findById(id).getUsername());
+        Assert.assertEquals("password has not changed!",
+                betterUser.getPassword(), userRepository.findById(id).getPassword());
+
+
+        // user id not found
+        betterUser.setUsername("newName");
+        betterUser.setPassword("newPassword");
+        inputJson = super.mapToJson(betterUser);
+
+        mvcResult = mvc.perform(MockMvcRequestBuilders.put(uri+"398")
+                .contentType(MediaType.APPLICATION_JSON).content(inputJson)).andReturn();
+
+        Assert.assertEquals("id (398) should not exist",404, mvcResult.getResponse().getStatus());
 
 
 
