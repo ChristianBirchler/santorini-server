@@ -11,7 +11,12 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 
 @ControllerAdvice
 public class UserExceptionController {
-
+    /*
+    This class handles the exception which occur in the UserService.
+    For each exception an ErrorResponse object will be instantiated with a error message. Those ErrorResponse objects
+    will be returned from the REST API to the client.
+    Further a HTTP status code will be set.
+     */
 
 
     @ExceptionHandler(InvalidCredentialsException.class)
